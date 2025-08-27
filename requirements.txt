@@ -1,0 +1,11 @@
+ta
+scikit-learn
+xgboost
+joblib
+matplotlib
+pandas
+numpy
+seaborn
+statsmodels
+yfinance
+nbformat
