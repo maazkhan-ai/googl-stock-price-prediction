@@ -1,0 +1,27 @@
+feature
+Open
+High
+Low
+Close
+Adj Close
+Volume
+SMA_20
+SMA_50
+LogReturn
+SMA_7
+SMA_21
+RSI14
+MACD
+MACD_signal
+BB_high
+BB_low
+BB_width
+EMA12
+EMA26
+PctChange
+RollingStd_10
+Close_lag_1
+Close_lag_2
+Close_lag_3
+Close_lag_5
+Close_lag_10
