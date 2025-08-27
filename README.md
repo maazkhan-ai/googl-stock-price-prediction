@@ -1,228 +1,138 @@
-# Stock Price Prediction with Traditional Machine Learning
+# GOOGL Stock Price Prediction
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange)
-![Machine Learning](https://img.shields.io/badge/Machine-Learning-purple)
-![Finance](https://img.shields.io/badge/Application-Finance-green)
+Welcome to the **GOOGL Stock Price Prediction** project! This repository contains a Jupyter notebook (`stock_price_prediction.ipynb`) that builds a machine learning pipeline to predict the next-day closing price of Alphabet Inc. (GOOGL) stock using historical data from 2020 to 2024. With a focus on accuracy and reproducibility, the pipeline leverages technical indicators and achieves a directional accuracy of **65.3%** with **79.1% precision** for upward price movements. Whether you're a data scientist, financial analyst, or developer, this project offers a robust foundation for stock price forecasting.
 
-The primary objective of this research is to develop and evaluate a robust machine learning pipeline for predicting the future closing prices of Google stock (GOOGL). The project aims to move from data loading and cleaning, through exploratory data analysis (EDA) and feature engineering, to training multiple predictive models. The ultimate goal is to identify the best-performing model and serialize it for future use, providing a comprehensive end-to-end framework for financial time series forecasting.
+## Project Overview
 
-## Features
+This project develops a machine learning model to predict the next-day closing price of GOOGL stock and its directional movement (up or down) using historical price and volume data. The pipeline, implemented in Python, includes data preprocessing, feature engineering, model selection, evaluation, and artifact storage. The best model, **Lasso regression**, delivers reliable predictions, with key features like Open price, Close price, and 50-day SMA driving results. Artifacts are saved for easy deployment in applications like Streamlit or APIs.
 
-- **Comprehensive EDA**: Detailed exploratory data analysis with visualizations
-- **Advanced Feature Engineering**: 20+ technical indicators and lag features
-- **Multiple ML Models**: Comparison of 7 different regression approaches
-- **Time-Aware Validation**: Proper time-series cross-validation
-- **Dual Evaluation**: Regression metrics + directional accuracy
-- **Model Interpretation**: Feature importance analysis
-- **Production Ready**: Model serialization and artifact management
+## Research Objective
 
-## Dataset Information
+The goal is to create a data-driven model to accurately predict GOOGL's next-day closing price using historical data from January 2020 to December 2024. By incorporating technical indicators and lagged price features, the project aims to capture market trends and support financial analysis or trading strategies, ensuring reproducibility through saved model artifacts.
 
-| Attribute | Description | Period |
-|-----------|-------------|--------|
-| **Ticker** | GOOGL (Alphabet Inc.) | 2020-2025 |
-| **Features** | OHLCV + Technical Indicators | Daily |
-| **Target** | Next-day closing price | - |
+## Methodology
 
-## Architecture Overview
+The pipeline follows a structured approach:
 
-```mermaid
-graph TD
-    A[Raw Data] --> B[Data Cleaning];
-    B --> C[Exploratory Analysis];
-    C --> D[Feature Engineering];
-    D --> E[Model Training];
-    E --> F[Hyperparameter Tuning];
-    F --> G[Model Evaluation];
-    G --> H[Best Model Selection];
-    H --> I[Model Interpretation];
-    I --> J[Artifact Export];
-```
+1. **Data Preprocessing**:
+   - Loads `googl_data_2020_2025.csv` (1,258 daily records).
+   - Handles irregular headers, converts data types, removes missing values, and sorts by date.
+2. **Feature Engineering**:
+   - Generates technical indicators (e.g., SMA_7, SMA_50, RSI14, MACD, Bollinger Bands).
+   - Adds lagged features (e.g., Close_lag_1, Close_lag_10) and metrics like percentage change and log returns.
+3. **Model Selection**:
+   - Evaluates models (Linear Regression, Ridge, Lasso, Random Forest, XGBoost, SVR) using TimeSeriesSplit (5 folds).
+   - Tunes hyperparameters with GridSearchCV or RandomizedSearchCV.
+4. **Evaluation**:
+   - Tests the best model (Lasso) on 2024 data using MAE, RMSE, R², and directional metrics (accuracy, precision, recall).
+5. **Feature Importance**:
+   - Analyzes model coefficients to identify key predictors.
+6. **Artifacts**:
+   - Saves the trained model, feature list, and test splits in `artifacts_stock_research/`.
 
-## Technical Implementation
+## Key Findings
 
-### Feature Engineering
+- **Best Model**: Lasso regression outperformed other models based on cross-validation metrics (MAE, RMSE, R²).
+- **Performance**: Achieved **65.3% directional accuracy**, **79.1% precision**, and **60.3% recall** for upward price movements on the 2024 test set.
+- **Key Features**:
+  - **Open price** (coef: 20.76)
+  - **Close price** (coef: 5.74)
+  - **SMA_50** (coef: 1.55)
+- **Insights**: EDA revealed an upward price trend with periods of volatility; technical indicators like RSI and Bollinger Bands highlighted overbought/oversold conditions.
+- **Limitations**: The model misses external factors (e.g., news, macroeconomic events), limiting its ability to capture all price movements.
 
-| Category | Features |
-|----------|----------|
-| **Moving Averages** | SMA 7, 20, 21, 50 |
-| **Momentum Indicators** | RSI 14, MACD, MACD Signal |
-| **Volatility Indicators** | Bollinger Bands, Band Width, Rolling Std |
-| **Trend Indicators** | EMA 12, EMA 26 |
-| **Statistical Features** | Percentage Change, Lag Features (1-10 days) |
-
-### Model Comparison
-
-| Model | Hyperparameters Tuned | Best Score |
-|-------|----------------------|------------|
-| **Ridge Regression** | α: [0.01, 0.1, 1.0, 10.0] | - |
-| **Lasso Regression** | α: [0.0001, 0.001, 0.01, 0.1] | - |
-| **Support Vector Regression** | C, γ, ε | - |
-| **Random Forest** | n_estimators, max_depth, min_samples_split | - |
-| **XGBoost** | n_estimators, max_depth, learning_rate | - |
-
-### Evaluation Metrics
-
-**Regression Metrics**:
-- ✅ Root Mean Squared Error (RMSE)
-- ✅ Mean Absolute Error (MAE)
-- ✅ Mean Absolute Percentage Error (MAPE)
-- ✅ Coefficient of Determination (R²)
-
-**Directional Metrics**:
-- ✅ Direction Accuracy
-- ✅ Precision (Up Movements)
-- ✅ Recall (Up Movements)
-
-## Quick Start
+## Getting Started
 
 ### Prerequisites
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/stock-price-prediction.git
-cd stock-price-prediction
-```
+- Python 3.10+
+- Jupyter Notebook
+- Required libraries (see `requirements.txt` or install manually)
 
 ### Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/maazkhan-ai/googl-stock-price-prediction.git
+   cd googl-stock-price-prediction
+   ```
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   Or install manually:
+   ```bash
+   pip install ta scikit-learn xgboost joblib matplotlib pandas numpy seaborn statsmodels yfinance nbformat
+   ```
+3. **Prepare Data**:
+   - Place `googl_data_2020_2025.csv` in the project root. The file should contain daily GOOGL data (Date, Open, High, Low, Close, Adj Close, Volume).
+4. **Run the Notebook**:
+   ```bash
+   jupyter notebook
+   ```
+   Open `stock_price_prediction.ipynb` and execute cells sequentially.
 
-```bash
-# Install required packages
-pip install -r requirements.txt
-
-# Or install individually
-pip install numpy pandas matplotlib seaborn scikit-learn xgboost ta joblib
-```
-
-### Usage
-
-```python
-# Run the Jupyter notebook
-jupyter notebook stock_price_prediction_research_ready.ipynb
-
-# Or execute directly
-jupyter nbconvert --to notebook --execute stock_price_prediction_research_ready.ipynb
-```
-
-### For Google Colab Users
-
-```python
-# Upload the notebook and dataset to Google Colab
-# Run all cells to reproduce the analysis
-```
-
-## Project Structure
+## Repository Structure
 
 ```
-stock-price-prediction/
-│
-├── stock_price_prediction.ipynb  # Main research notebook
-├── googl_data_2020_2025.csv                     # Dataset (not in repo)
-├── artifacts_stock_research/                    # Generated artifacts
-│   ├── best_model_[model_name].joblib           # Serialized model
-│   ├── feature_list.csv                         # Feature names
-│   ├── X_test.csv                               # Test features
-│   └── y_test.csv                               # Test targets
-│
-├── requirements.txt                             # Python dependencies
-├── LICENSE                                      # MIT License
-└── README.md                                    # This file
+googl-stock-price-prediction/
+├── stock_price_prediction.ipynb  # Main notebook with the pipeline
+├── googl_data_2020_2025.csv     # Historical data (user-provided)
+├── artifacts_stock_research/     # Saved model and data
+│   ├── best_model_Lasso.joblib   # Trained Lasso model
+│   ├── feature_list.csv         # Feature list
+│   ├── X_test.csv               # Test features
+│   └── y_test.csv               # Test target
+├── requirements.txt             # Python dependencies
+└── README.md                   # This file
 ```
 
-## Results Preview
+## Usage
 
-*(Results will be populated after notebook execution)*
+1. **Run the Notebook**:
+   - Execute `stock_price_prediction.ipynb` to preprocess data, train the model, and visualize results (e.g., confusion matrix, feature importance).
+2. **Deploy the Model**:
+   - Load the saved model for predictions:
+     ```python
+     import joblib
+     model = joblib.load('artifacts_stock_research/best_model_Lasso.joblib')
+     ```
+   - Use in Streamlit, APIs, or other applications.
+3. **Customize**:
+   - Modify features, models, or hyperparameters in the notebook to experiment with new configurations.
 
-### Performance Comparison
+## Next Steps / Future Work
 
-| Model | RMSE | MAE | MAPE% | R² | Direction Accuracy | Precision Up | Recall Up |
-|-------|------|-----|-------|----|--------------------|--------------|-----------|
-| **Lasso** | 2.608470 | 1.792429 | 1.111808 | 0.968446 | 0.648760 | 0.791304 | 0.602649 |
-| **Ridge** | 2.640867 | 1.813006 | 1.125569 | 0.967658 | 0.636364 | 0.790909 | 0.576159 |
-| **Persistence** | 4.195418 | 3.183636 | 1.960341 | 0.918374 | 0.425620 | 0.577778 | 0.344371 |
-| **Random Forest** | 22.120654 | 18.108176 | 10.504002 |-1.269206 | 0.417355 | 0.866667 | 0.086093 |
-| **XGBoost** | 22.962908 | 18.995129 | 11.037739 | -1.445298 | 0.396694 | 0.750000 | 0.059603 | 
-| **SVR** | 42.380929 | 34.987003 | 20.372186 | -7.329501 | 0.404959 | 0.700000 | 0.092715 |
-| **Linear Regression** | 2552.734760 | 1776.611549 | 1036.150547 | -30218.651130 | 0.491736 | 0.784314 | 0.264901 |
+- **Enhance Data**: Incorporate news sentiment, earnings reports, or macroeconomic indicators.
+- **Advanced Models**: Experiment with deep learning (e.g., LSTM, GRU) for temporal modeling.
+- **New Features**: Add indicators like Stochastic Oscillator or ATR.
+- **Real-Time Deployment**: Build a Streamlit dashboard or API for live predictions.
+- **Robust Backtesting**: Include transaction costs and slippage for realistic simulations.
+- **Cross-Asset Testing**: Apply the pipeline to other stocks or asset classes.
 
-### Best Parameters
-| Model | Best Parameters |
-|-------|-----------------|
-| **Lasso** | {'model__alpha': 0.001} |
-| **Ridge** | {'model__alpha': 0.01} |
-| **Persistence** | naive |
-| **Random Forest** | {'model__n_estimators': 100, 'model__min_samples_split': 2, 'model__max_depth': 16} |
-| **XGBoost** | {'model__n_estimators': 300, 'model__max_depth': 3, 'model__learning_rate': 0.05} |
-| **SVR** | {'model__gamma': 'scale', 'model__epsilon': 0.1, 'model__C': 10} |
-| **Linear Regression** | default |
+## Limitations
 
-### Top Features
-
-1. [Most important feature] - [Importance score]
-2. [Second most important feature] - [Importance score]
-3. [Third most important feature] - [Importance score]
-
-## Future Enhancements
-
-- [ ] **Alternative Data Integration**: News sentiment, social media metrics
-- [ ] **Macroeconomic Indicators**: Interest rates, inflation data
-- [ ] **Probabilistic Forecasting**: Prediction intervals with uncertainty quantification
-- [ ] **Deep Learning Models**: LSTM, Transformer architectures
-- [ ] **Trading Strategy**: Backtesting engine with transaction costs
-- [ ] **Web Application**: Streamlit/FastAPI deployment
-- [ ] **Real-time Prediction**: API for live market data
-
-## Important Disclaimer
-
-**This project is for educational and research purposes only.** The models and predictions should not be used for actual trading decisions without proper validation, risk management, and professional financial advice. Past performance is not indicative of future results.
+- Does not account for external factors (e.g., news, economic events).
+- Moderate directional accuracy (65.3%) and recall (60.3%) indicate room for improvement.
+- Trained on historical data; performance may vary in future market conditions.
 
 ## Contributing
 
-We welcome contributions to improve this project! Please feel free to:
+We welcome contributions! To contribute:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m "Add your feature"`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-See the [issues page](https://github.com/maazkhan-ai/stock-price-prediction/issues) for current todos and improvements.
+Please follow PEP 8 guidelines and include tests where applicable.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Dataset sourced from [Data Source]
-- Technical indicators calculated using the [`ta`](https://github.com/bukosabino/ta) library
-- Built with popular Python data science libraries
+This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-**Your Name** - [your.maazkhan.9ai@gmail.com](mailto:maazkhan.9ai@gmail.com)
-
-Project Link: [https://github.com/maazkhan-ai/stock-price-prediction](https://github.com/maazkhan-ai/stock-price-prediction)
+For questions or feedback, open an issue on GitHub or email [maazkhan-ai@gmail.com].
 
 ---
 
-<div align="center">
-
-**If you find this project useful, please consider giving it a ⭐️ on GitHub!**
-
-</div>
-
-## Roadmap
-
-- [x] Complete initial research notebook
-- [x] Implement comprehensive feature engineering
-- [x] Compare multiple ML models
-- [ ] Add deep learning approaches (LSTM/Transformers)
-- [ ] Develop trading strategy backtester
-- [ ] Create web application interface
-- [ ] Publish research paper on methodology
-
----
-
-*Note: This project demonstrates the application of traditional machine learning to financial time series forecasting. While results show statistically significant directional prediction ability, always exercise caution when applying such models to real trading scenarios and consider transaction costs, risk management, and portfolio diversification principles.*
+ **Star this repository** if you find it useful! Happy predicting! 
